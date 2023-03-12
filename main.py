@@ -1,6 +1,5 @@
 from flask import Flask, jsonify, request
 import pymysql
-# from config import host, db_name, password, user
 
 host = "127.0.0.1"
 user = "newUser"
@@ -8,17 +7,8 @@ password = "someChanges123"
 db_name = "myapp"
 app = Flask(__name__)
 
-
-# def before_request():
-#     allowed_ips = ['172.20.10.5','172.20.10.1', '127.0.0.1'] # здесь можно указать IP-адреса, которым разрешен доступ
-#     if request.remote_addr not in allowed_ips:
-#         return jsonify({'message': 'Access denied'}), 403
-
-
-# INSERT INTO `myapp`.`files` (`user_id`, `taskName`, `date`, `priority`, `tags`, `notes`) VALUES ('19', 'щфываьфы', '9934-12-31 23:59:39', 'к', 'фвафы', 'фывафывафыва');
-
-@app.route('/user', methods=['POST'])
-def Login_user():
+@app.route('/add_data', methods=['POST'])
+def add_data():
     data = request.json
     name = data['username']
     passw = data['password']
@@ -32,20 +22,48 @@ def Login_user():
             database=db_name,
             cursorclass=pymysql.cursors.DictCursor
         )
-
         with connection.cursor() as cursor:
-            # select_query = "SELECT * FROM users WHERE username = '" + name + "';"
+            select_user = "SELECT * FROM users WHERE username = %s AND password = %s"
+            cursor.execute(select_user, (name, passw))
+            usr = cursor.fetchone()
+            if not usr:
+                response = {'message': 'Invalid username or password'}
+                status_code = 401
+            else:
+                insert_file = "INSERT INTO files (user_id, taskName, date, priority, tags, notes) VALUES (%s, %s, %s, %s, %s, %s)"
+                cursor.execute(insert_file, (usr['id'], data['taskName'], data['date'], data['priority'], data['tags'], data['notes']))
+                connection.commit()
+                response = {'message': 'Data added successfully'}
+                status_code = 200
+    except Exception as ex:
+        print(ex)
+        response = {'message': 'Error adding data'}
+        status_code = 500
+    finally:
+        connection.close()
 
+    return jsonify(response), status_code
+@app.route('/user', methods=['POST'])
+def Login_user():
+    data = request.json
+    name = data['username']
+    passw = data['password']
+    try:
+        connection = pymysql.connect(
+            host=host,
+            port=3306,
+            user=user,
+            password=password,
+            database=db_name,
+            cursorclass=pymysql.cursors.DictCursor
+        )
+        with connection.cursor() as cursor:
             select_query = "SELECT * FROM users WHERE username = '" + name + "' AND password = '" + passw + "';"
-
             cursor.execute(select_query)
-
-            # Проверяем, существует ли пользователь с таким же именем
             if cursor.fetchone() is not None:
                 response = {'message': 'User with this username already exists'}
                 status_code = 409  # Код HTTP 409 Conflict возвращается, если ресурс уже существует
             else:
-
                 response = {'message': 'User with this username not find'}
                 status_code = 404  # Код HTTP 404 Запрашиваемый ресурс не найден на сервере
     except Exception as ex:
@@ -58,7 +76,6 @@ def create_user():
     data = request.json
     name = data['username']
     passw = data['password']
-
     try:
         connection = pymysql.connect(
             host=host,
@@ -90,8 +107,6 @@ def create_user():
         status_code = 500  # Код HTTP 500 Internal Server Error возвращается, если произошла внутренняя ошибка сервера
 
     return jsonify(response), status_code
-
-
 
 @app.route('/data', methods=['POST'])
 def get_data():
@@ -133,11 +148,6 @@ def get_data():
 
     return jsonify(response), status_code
 
-
-
-
-
-
 @app.route('/users/<username>', methods=['DELETE'])
 def delete_user(username):
     try:
@@ -160,6 +170,7 @@ def delete_user(username):
         response = {'message': 'Error deleting user'}
         status_code = 500
     return jsonify(response), status_code
+
 @app.route('/users', methods=['GET'])
 def get_users():
     try:
@@ -186,6 +197,7 @@ def get_users():
     # finally:
     #     connection.close()
     return jsonify(response), status_code
+
 @app.route('/users/<username>', methods=['PUT'])
 def update_user(username):
     data = request.json
@@ -216,151 +228,4 @@ if __name__ == '__main__':
     app.run(host='0.0.0.0', port=4568)
 
 
-
-
-
-
-# def create_user():
-#     data = request.json
-#     name = data['username']
-#     passw = data['password']
-#
-#     try:
-#         connection = pymysql.connect(
-#             host=host,
-#             port=3306,
-#             user=user,
-#             password=password,
-#             database=db_name,
-#             cursorclass=pymysql.cursors.DictCursor
-#         )
-#
-#         with connection.cursor() as cursor:
-#             insert_query = "INSERT INTO users (username, password) VALUES ('" + name + "', '" + passw + "');"
-#             # insert_query = "INSERT INTO users (username, password) VALUES ('what', 'whyyouareworking');"
-#             cursor.execute(insert_query)
-#             connection.commit()
-#         response = {'message': 'User created successfully'}
-#         status_code = 201
-#     except Exception as ex:
-#         print(ex)
-#         response = {'message': 'Error creating user'}
-#         status_code = 500
-#     return jsonify(response), status_code
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# @app.before_request
-# def before_request():
-#     allowed_ips = ['172.20.10.5','172.20.10.1', '127.0.0.1'] # здесь можно указать IP-адреса, которым разрешен доступ
-#     if request.remote_addr not in allowed_ips:
-#         return jsonify({'message': 'Access denied'}), 403
-
-# @app.route('/users', methods=['POST'])
-# def create_user():
-#     data = request.json
-#     username = data['username']
-#     password = data['password']
-#     try:
-#         connection = pymysql.connect(
-#             host=host,
-#             port=3306,
-#             user=user,
-#             password=password,
-#             database=db_name,
-#             cursorclass=pymysql.cursors.DictCursor
-#         )
-#         with connection.cursor() as cursor:
-#             insert_query = "INSERT INTO users (username, password) VALUES (%s, %s);"
-#             cursor.execute(insert_query, (username, password))
-#             connection.commit()
-#         response = {'message': 'User created successfully'}
-#         status_code = 201
-#     except Exception as ex:
-#         print(ex)
-#         response = {'message': 'Error creating user'}
-#         status_code = 500
-#     return jsonify(response), status_code
-# @app.route('/users/<username>', methods=['PUT'])
-# def update_user(username):
-#     data = request.json
-#     new_password = data['password']
-#     try:
-#         connection = pymysql.connect(
-#             host=host,
-#             port=3306,
-#             user=user,
-#             password=password,
-#             database=db_name,
-#             cursorclass=pymysql.cursors.DictCursor
-#         )
-#         with connection.cursor() as cursor:
-#             update_query = "UPDATE users SET password = %s WHERE username = %s;"
-#             cursor.execute(update_query, (new_password, username))
-#             connection.commit()
-#         response = {'message': 'User updated successfully'}
-#         status_code = 200
-#     except Exception as ex:
-#         print(ex)
-#         response = {'message': 'Error updating user'}
-#         status_code = 500
-#     return jsonify(response), status_code
-# @app.route('/users/<username>', methods=['DELETE'])
-# def delete_user(username):
-#     try:
-#         connection = pymysql.connect(
-#             host=host,
-#             port=3306,
-#             user=user,
-#             password=password,
-#             database=db_name,
-#             cursorclass=pymysql.cursors.DictCursor
-#         )
-#         with connection.cursor() as cursor:
-#             delete_query = "DELETE FROM users WHERE username = %s"
-#             cursor.execute(delete_query, (username,))
-#             connection.commit()
-#         response = {'message': 'User deleted successfully'}
-#         status_code = 200
-#     except Exception as ex:
-#         print(ex)
-#         response = {'message': 'Error deleting user'}
-#         status_code = 500
-#     return jsonify(response), status_code
-# @app.route('/users', methods=['GET'])
-# def get_users():
-#     try:
-#         connection = pymysql.connect(
-#             host=host,
-#             port=3306,
-#             user=user,
-#             password=password,
-#             database=db_name,
-#             cursorclass=pymysql.cursors.DictCursor
-#         )
-#         with connection.cursor() as cursor:
-#             select_all_rows = "SELECT * FROM users"
-#             cursor.execute(select_all_rows)
-#             rows = cursor.fetchall()
-#             response = {'users': rows}
-#             status_code = 200
-#     except Exception as ex:
-#         print(ex)
-#         response = {'message': 'Error getting users'}
-#         status_code = 500
-#     return jsonify(response), status_code
-#
-# if __name__ == '__main__':
-#     app.run()
 
