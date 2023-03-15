@@ -1,3 +1,5 @@
+import json
+from datetime import date
 from flask import Flask, jsonify, request
 import pymysql
 
@@ -6,6 +8,13 @@ user = "newUser"
 password = "someChanges123"
 db_name = "myapp"
 app = Flask(__name__)
+
+
+class CustomEncoder(json.JSONEncoder):
+    def default(self, o):
+        if isinstance(o, date):
+            return o.isoformat()
+        return super().default(o)
 
 @app.route('/add_data', methods=['POST'])
 def add_data():
@@ -113,6 +122,10 @@ def get_data():
     data = request.json
     name = data['username']
     passw = data['password']
+
+
+
+
     try:
         connection = pymysql.connect(
             host=host,
@@ -127,52 +140,118 @@ def get_data():
             select_user = "SELECT * FROM users WHERE username = %s AND password = %s"
             cursor.execute(select_user, (name, passw))
             usr = cursor.fetchone()
-
+            response = []
             if not usr:
-                # if user not found, return an error response
                 response = {'message': 'Invalid username or password'}
                 status_code = 401
             else:
                 # find the files with the same user_id as the found user
                 select_files = "SELECT * FROM files WHERE user_id = %s"
-                cursor.execute(select_files, (usr['id'],))
+                cursor.execute(select_files, (usr['id']))
                 files = cursor.fetchall()
+
+                print("here is files")
+                print(files)
                 response = {'files': files}
+                print(response)
+                # data.append(response)
                 status_code = 200
     except Exception as ex:
         print(ex)
         response = {'message': 'Error getting files'}
-        status_code = 500
-    finally:
-        connection.close()
 
+        status_code = 500
+    encoded_response = json.dumps(response).encode('unicode_escape').decode()
+    encoded_response = json.dumps(response, cls=CustomEncoder)
+
+    print(encoded_response)
+    print(encoded_response)
+    print("jsonifyResponse:")
+    print(jsonify(response))
     return jsonify(response), status_code
 
-@app.route('/users/<username>', methods=['DELETE'])
-def delete_user(username):
-    try:
-        connection = pymysql.connect(
-            host=host,
-            port=3306,
-            user=user,
-            password=password,
-            database=db_name,
-            cursorclass=pymysql.cursors.DictCursor
-        )
-        with connection.cursor() as cursor:
-            delete_query = "DELETE FROM users WHERE username = %s"
-            cursor.execute(delete_query, (username,))
-            connection.commit()
-        response = {'message': 'User deleted successfully'}
-        status_code = 200
-    except Exception as ex:
-        print(ex)
-        response = {'message': 'Error deleting user'}
-        status_code = 500
-    return jsonify(response), status_code
+# @app.route('/users/<username>', methods=['DELETE'])
+# def delete_user(username):
+#     try:
+#         connection = pymysql.connect(
+#             host=host,
+#             port=3306,
+#             user=user,
+#             password=password,
+#             database=db_name,
+#             cursorclass=pymysql.cursors.DictCursor
+#         )
+#         with connection.cursor() as cursor:
+#             delete_query = "DELETE FROM users WHERE username = %s"
+#             cursor.execute(delete_query, (username,))
+#             connection.commit()
+#         response = {'message': 'User deleted successfully'}
+#         status_code = 200
+#     except Exception as ex:
+#         print(ex)
+#         response = {'message': 'Error deleting user'}
+#         status_code = 500
+#     return jsonify(response), status_code
+#
+# @app.route('/users', methods=['GET'])
+# def get_users():
+#     try:
+#         connection = pymysql.connect(
+#             host=host,
+#             port=3306,
+#             user=user,
+#             password=password,
+#             database=db_name,
+#             cursorclass=pymysql.cursors.DictCursor
+#         )
+#         print("good")
+#         # print(request.headers)
+#         with connection.cursor() as cursor:
+#             select_all_rows = "SELECT * FROM users"
+#             cursor.execute(select_all_rows)
+#             rows = cursor.fetchall()
+#             response = {'users': rows}
+#             print("userGetResponse")
+#             print(response)
+#             status_code = 200
+#     except Exception as ex:
+#         print(ex)
+#         response = {'message': 'Error getting users'}
+#         status_code = 500
+#     # finally:
+#     #     connection.close()
+#     print("jsonifyResponse:")
+#     print(jsonify(response))
+#     return jsonify(response), status_code
 
-@app.route('/users', methods=['GET'])
-def get_users():
+# @app.route('/users/<username>', methods=['PUT'])
+# def update_user(username):
+#     data = request.json
+#     new_password = data['password']
+#     try:
+#         connection = pymysql.connect(
+#             host=host,
+#             port=3306,
+#             user=user,
+#             password=password,
+#             database=db_name,
+#             cursorclass=pymysql.cursors.DictCursor
+#         )
+#         with connection.cursor() as cursor:
+#             update_query = "UPDATE users SET password = %s WHERE username = %s;"
+#             cursor.execute(update_query, (new_password, username))
+#             connection.commit()
+#         response = {'message': 'User updated successfully'}
+#         status_code = 200
+#     except Exception as ex:
+#         print(ex)
+#         response = {'message': 'Error updating user'}
+#         status_code = 500
+#     return jsonify(response), status_code
+
+
+@app.route('/user', methods=['GET'])
+def get_user():
     try:
         connection = pymysql.connect(
             host=host,
@@ -185,43 +264,26 @@ def get_users():
         print("good")
         # print(request.headers)
         with connection.cursor() as cursor:
-            select_all_rows = "SELECT * FROM users"
+            select_all_rows = "SELECT * FROM files"
             cursor.execute(select_all_rows)
             rows = cursor.fetchall()
-            response = {'users': rows}
+            response = {'files': rows}
+            print("userGetResponse")
+            print(response)
             status_code = 200
     except Exception as ex:
         print(ex)
-        response = {'message': 'Error getting users'}
+        response = {'message': 'Error getting files'}
         status_code = 500
     # finally:
     #     connection.close()
+    print("jsonifyResponse:")
+    print(jsonify(response))
+
     return jsonify(response), status_code
 
-@app.route('/users/<username>', methods=['PUT'])
-def update_user(username):
-    data = request.json
-    new_password = data['password']
-    try:
-        connection = pymysql.connect(
-            host=host,
-            port=3306,
-            user=user,
-            password=password,
-            database=db_name,
-            cursorclass=pymysql.cursors.DictCursor
-        )
-        with connection.cursor() as cursor:
-            update_query = "UPDATE users SET password = %s WHERE username = %s;"
-            cursor.execute(update_query, (new_password, username))
-            connection.commit()
-        response = {'message': 'User updated successfully'}
-        status_code = 200
-    except Exception as ex:
-        print(ex)
-        response = {'message': 'Error updating user'}
-        status_code = 500
-    return jsonify(response), status_code
+
+
 
 
 if __name__ == '__main__':
