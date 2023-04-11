@@ -15,7 +15,7 @@ class CustomEncoder(json.JSONEncoder):
         if isinstance(o, date):
             return o.isoformat()
         return super().default(o)
-
+#adapter
 @app.route('/add_data', methods=['POST'])
 def add_data():
     data = request.json
