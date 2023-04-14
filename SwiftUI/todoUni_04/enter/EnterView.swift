@@ -74,3 +74,4 @@ struct EnterView_Previews: PreviewProvider {
         EnterView()
     }
 }
+
