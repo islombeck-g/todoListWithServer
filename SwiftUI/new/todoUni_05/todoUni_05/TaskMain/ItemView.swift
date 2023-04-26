@@ -10,20 +10,23 @@ struct ItemView: View {
         HStack{
             
             VStack{
-                
-                Text(item.taskName)
-                    .foregroundColor(Color("light"))
-                    .font(.system(size:25))
-                    .fontWeight(.black)
-                    .lineLimit(1)
-                    .multilineTextAlignment(.leading)
-                    .strikethrough(item.doneOrNot, color: .red)
+                HStack{
+                    Text(item.taskName)
+                        .foregroundColor(Color("light"))
+                        .font(.system(size:25))
+                        .fontWeight(.black)
+                        .lineLimit(1)
+                        .multilineTextAlignment(.leading)
+                        .strikethrough(item.doneOrNot, color: .red)
+                    Spacer()
+                }
+               
 
                     
                 HStack{
                     Image(systemName: item.tagsImg)
                     Text(item.tags)
-                     
+                     Spacer()
                 }.foregroundColor(Color("\(item.priority)"))
                 
                 

@@ -6,7 +6,51 @@ struct TaskView: View {
     
     @State private var showInfo:Bool = false
     
-    var data:arrayOfData = arrayOfData(files: [userData(id: 1,user_id: 2,taskName: "Task 1",creationDate: Date()+1560,priority: "o",tags: "Project",notes: "Some notes",doneOrNot: false,tagsImg:"folder"),userData(id: 2,user_id: 2,taskName: "Task 2",creationDate: Date(),priority: "o",tags: "Project",notes: "Somчмчсмясчмясчмумдлроукдмкоуишмытукшзмгфыитмофимшгфукитзмшукфтишмфтe notes",doneOrNot: false,tagsImg:"folder"),userData(id: 2,user_id: 2,taskName: "Task 3",creationDate: Date(),priority: "o",tags: "Project",notes: "aldkfnaskfa notes",doneOrNot: false,tagsImg:"folder"),userData(id: 2,user_id: 2,taskName: "Task 4",creationDate: Date(),priority: "o",tags: "Project",notes: "asldkfjakdfjadf notes",doneOrNot: false,tagsImg:"folder"),userData(id: 2,user_id: 2,taskName: "Task 5",creationDate: Date(),priority: "o",tags: "Project",notes: "Somчмчсмясчмясчмуfpdojfopsjfмдлроукдмкоуишмытукшзмгфыитмофимшгфукитзмшукфтишмфтe notes",doneOrNot: true,tagsImg:"folder")])
+    var data:arrayOfData = arrayOfData(files: [
+        userData(id: 1,
+                 user_id: 2,
+                 taskName: "Курсовая работа",
+                 creationDate: Date()+10560,
+                 priority: "r",
+                 tags: "University",
+                 notes: "до 23 мая нужно сдать все документы",
+                 doneOrNot: true,
+                 tagsImg:"graduationcap"),
+        userData(id: 2,
+                 user_id: 2,
+                 taskName: "помыть посуду",
+                 creationDate: Date(),
+                 priority: "o",
+                 tags: "Home",
+                 notes: "Somчмчсмясчмясчмумдлроукдмкоуишмытукшзмгфыитмофимшгфукитзмшукфтишмфтe notes",
+                 doneOrNot: false,
+                 tagsImg:"house"),
+        userData(id: 2,
+                 user_id: 2,
+                 taskName: "Прочитать новую главу",
+                 creationDate: Date(),
+                 priority: "g",
+                 tags: "Health",
+                 notes: "aldkfnaskfa notes",
+                 doneOrNot: false,
+                 tagsImg:"bolt.heart"),
+        userData(id: 2,user_id: 2,
+                 taskName: "написать Тимуру",
+                 creationDate: Date(),
+                 priority: "g",
+                 tags: "Work",
+                 notes: "asldkfjakdfjadf notes",
+                 doneOrNot: false,
+                 tagsImg:"briefcase"),
+        userData(id: 2,
+                 user_id: 2,
+                 taskName: "отработать последнее занятие",
+                 creationDate: Date()+1543,
+                 priority: "o",
+                 tags: "Sport",
+                 notes: "не забыть зачётную книжку",
+                 doneOrNot: false,
+                 tagsImg:"dumbbell")])
     
     
     var body: some View {
@@ -42,7 +86,7 @@ struct TaskView: View {
                             .foregroundColor(Color("dark"))
                     ){
                         ForEach(data.files, id: \.self){item in
-                            if item.creationDate >= Date()+1440{
+                            if item.creationDate >= Date()+1440 && item.doneOrNot == false{
                                 ItemView(item: item, showInfo: $showInfo)
                                     .sheet(isPresented: $showInfo){
                                         SheetView(item: item, showSheetView: $showInfo)

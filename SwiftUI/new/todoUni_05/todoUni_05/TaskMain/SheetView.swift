@@ -82,8 +82,8 @@ struct SheetView: View {
     }
 }
 
-struct SheetView_Previews: PreviewProvider {
-    static var previews: some View {
-        SheetView(item: .init(taskName: "Task 1", creationDate: Date(), priority: "High", tags: "Project", notes: "Some notes", doneOrNot: false, tagsImg: "folder"), showSheetView: .constant(false))
-    }
-}
+//struct SheetView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        SheetView(item: .init(taskName: "Task 1", creationDate: Date(), priority: "High", tags: "Project", notes: "Some notes", doneOrNot: false, tagsImg: "folder"), showSheetView: .constant(false))
+//    }
+//}

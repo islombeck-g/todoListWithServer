@@ -21,12 +21,12 @@ struct AddDataView: View {
             ZStack{
                 VStack{
                     VStack(alignment: .leading, spacing: 10.0){
-                        Text("New Task")
+                        Text("Новое напоминание")
                             .font(.largeTitle)
                             .fontWeight(.black)
                         Group{
-                            Text("Name")
-                            TextField("EnterTaskName", text: $taskName)
+                            Text("Название")
+                            TextField("Введите название", text: $taskName)
                                 .padding(13)
                                 .overlay(
                                     RoundedRectangle(cornerRadius: 10)
@@ -34,7 +34,7 @@ struct AddDataView: View {
                                 )
                         }
                         Group{
-                            Text("Remind me")
+                            Text("Напомни мне")
     
                             ZStack{
                                 Image(systemName: "alarm.waves.left.and.right")
@@ -44,7 +44,7 @@ struct AddDataView: View {
                             }
                         }
                         Group{
-                            Text("Priority")
+                            Text("Приоритет")
                             HStack{
                                 Button{
                                     self.selectedPriority = "g"
@@ -77,7 +77,7 @@ struct AddDataView: View {
                             }
                         }
                         Group{
-                            Text("Tags")
+                            Text("Категории")
                             VStack{
                                 HStack{
                                     ForEach(0..<3) { index in
@@ -132,8 +132,8 @@ struct AddDataView: View {
                                 }
                             }
                         }
-                        Text("Note")
-                        TextField("EnterTaskDesc", text: $taskDesc)
+                        Text("Заметки")
+                        TextField("Введите заметку", text: $taskDesc)
                             .padding(13)
                             .overlay(
                                 RoundedRectangle(cornerRadius: 10)

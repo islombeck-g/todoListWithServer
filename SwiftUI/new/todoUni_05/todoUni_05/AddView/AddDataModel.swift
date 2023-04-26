@@ -6,3 +6,16 @@
 //
 
 import Foundation
+
+
+class AddDataModel{
+    
+    var dataArray:arrayOfData = arrayOfData(files:[])
+    
+    func addItemToData(){
+        
+        
+        return
+    }
+    
+}

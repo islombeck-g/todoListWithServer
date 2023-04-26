@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A6316E7829E972B900CFF950 /* TaskMainModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6316E7729E972B900CFF950 /* TaskMainModel.swift */; };
 		A64F527B29E958AD008DAFAF /* SheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64F527A29E958AD008DAFAF /* SheetView.swift */; };
 		A64F527D29E95C8D008DAFAF /* AddDataView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64F527C29E95C8D008DAFAF /* AddDataView.swift */; };
 		A6A2869629E968FB00615FE0 /* FocuseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6A2869429E968FB00615FE0 /* FocuseView.swift */; };
@@ -25,6 +26,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		A6316E7729E972B900CFF950 /* TaskMainModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskMainModel.swift; sourceTree = "<group>"; };
 		A64F527A29E958AD008DAFAF /* SheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetView.swift; sourceTree = "<group>"; };
 		A64F527C29E95C8D008DAFAF /* AddDataView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddDataView.swift; sourceTree = "<group>"; };
 		A6A2869429E968FB00615FE0 /* FocuseView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FocuseView.swift; sourceTree = "<group>"; };
@@ -66,8 +68,8 @@
 		A6A2869929E96F3300615FE0 /* AddView */ = {
 			isa = PBXGroup;
 			children = (
-				A64F527C29E95C8D008DAFAF /* AddDataView.swift */,
 				A6A2869A29E96F5600615FE0 /* AddDataModel.swift */,
+				A64F527C29E95C8D008DAFAF /* AddDataView.swift */,
 			);
 			path = AddView;
 			sourceTree = "<group>";
@@ -75,6 +77,7 @@
 		A6A2869E29E96F9300615FE0 /* TaskMain */ = {
 			isa = PBXGroup;
 			children = (
+				A6316E7729E972B900CFF950 /* TaskMainModel.swift */,
 				A6FEBD2E29E5F13F00972B4E /* TaskView.swift */,
 				A6FEBD3029E6CFCF00972B4E /* ItemView.swift */,
 				A64F527A29E958AD008DAFAF /* SheetView.swift */,
@@ -103,11 +106,11 @@
 			children = (
 				A6FEBD1829E5DC3C00972B4E /* todoUni_05App.swift */,
 				A6FEBD1A29E5DC3C00972B4E /* ContentView.swift */,
+				A6FEBD2A29E5E61700972B4E /* Enter */,
 				A6FEBD2D29E5E65F00972B4E /* someData */,
 				A6A2869E29E96F9300615FE0 /* TaskMain */,
 				A6A2869929E96F3300615FE0 /* AddView */,
 				A6A2869829E9690800615FE0 /* FocuseView */,
-				A6FEBD2A29E5E61700972B4E /* Enter */,
 				A6FEBD1C29E5DC3C00972B4E /* Assets.xcassets */,
 				A6FEBD1E29E5DC3C00972B4E /* Preview Content */,
 			);
@@ -215,6 +218,7 @@
 				A64F527B29E958AD008DAFAF /* SheetView.swift in Sources */,
 				A6FEBD2929E5E61400972B4E /* EnterViewJson.swift in Sources */,
 				A6FEBD3329E6CFFA00972B4E /* userData.swift in Sources */,
+				A6316E7829E972B900CFF950 /* TaskMainModel.swift in Sources */,
 				A6FEBD1929E5DC3C00972B4E /* todoUni_05App.swift in Sources */,
 				A6FEBD2F29E5F13F00972B4E /* TaskView.swift in Sources */,
 				A6FEBD3129E6CFCF00972B4E /* ItemView.swift in Sources */,
