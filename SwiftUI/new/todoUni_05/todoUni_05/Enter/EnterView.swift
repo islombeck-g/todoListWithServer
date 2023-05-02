@@ -2,15 +2,22 @@
 import SwiftUI
 
 struct EnterView: View {
-    @StateObject var focuseModel: FocuseModel = .init ()
-
+    //    @StateObject var focuseModel: FocuseModel = .init ()
+    //    @State private var registerORloginView = true
+    //    @State private var path:NavigationPath = NavigationPath()
+    //    @State var userSetting = userSettings()
+    //    @StateObject var viewModel = EnterViewJson()
+    //    @State var userS = userSettings()
+    //
+    //
+    
+    @StateObject var focuseModel: FocuseModel = .init()
     @State private var registerORloginView = true
-    @State private var path:NavigationPath = NavigationPath()
+    @State private var path: NavigationPath = NavigationPath()
+    @State var userSetting = userSettings()
+    @StateObject var viewModel = EnterViewJson()
+    @State var userS = userSettings()
     
-    @State private var name:String = ""
-    @State private var password:String = ""
-    
-    @ObservedObject var viewModel:EnterViewJson = EnterViewJson()
     var body: some View {
         NavigationStack(path: $path){
             
@@ -20,12 +27,12 @@ struct EnterView: View {
                 VStack{
                     if registerORloginView{
                         
-                            Text("Регистрация")
+                        Text("Регистрация")
                             .foregroundColor(.black)
                             .font(.system(size: 35))
                         Group{
-                            TextField("Имя", text: $name)
-                            TextField("пароль", text: $password)
+                            TextField("Имя", text: $userSetting.userName)
+                            TextField("пароль", text: $userSetting.userPassword)
                         }
                         .foregroundColor(.white)
                         .padding()
@@ -39,9 +46,12 @@ struct EnterView: View {
                                 .foregroundColor(.black)
                         }
                         Button{
-                            let me = viewModel.Register()
-                            if me == "входУспешноВыполнен"{
-                                path.append(me)
+                            //                            let me = viewModel.register()
+                            viewModel.registerApi(uName: userSetting.userName, uPass: userSetting.userPassword) { returnMessage in
+                                print(returnMessage)
+                                if returnMessage == "входУспешноВыполнен"{
+                                    path.append(returnMessage)
+                                }
                             }
                         }label: {
                             Text("регистрация")
@@ -58,8 +68,8 @@ struct EnterView: View {
                             .foregroundColor(.black)
                             .font(.system(size: 35))
                         Group{
-                            TextField("Имя", text: $name)
-                            TextField("пароль", text: $password)
+                            TextField("Имя", text: $userSetting.userName)
+                            TextField("пароль", text: $userSetting.userPassword)
                         }
                         .foregroundColor(.white)
                         .padding()
@@ -74,9 +84,12 @@ struct EnterView: View {
                                 .foregroundColor(.black)
                         }
                         Button{
-                            let me = viewModel.logIn()
-                            if me == "входУспешноВыполнен"{
-                                path.append(me)
+                            //                            let me = viewModel.logIn()
+                            viewModel.logInApi(uName: userSetting.userName, uPass: userSetting.userPassword) { returnMessage in
+                                print(returnMessage)
+                                if returnMessage == "входУспешноВыполнен"{
+                                    path.append(returnMessage)
+                                }
                             }
                         }label: {
                             Text("вход")
@@ -87,25 +100,29 @@ struct EnterView: View {
                         .cornerRadius(10)
                         .padding(.top, 50)
                         .padding(.leading, 200)
-
+                        
                     }
                     
                     
                 }
             }
             .navigationDestination(for: String.self) { view in
+                
                 if view == "входУспешноВыполнен" {
-                    TaskView(path: $path)
+//                    TaskView(path: $path, userSetting: userSetting, taskModel: TaskMainModel(user: $userSetting) )
+                    
+                    TaskView(path: $path, userSetting: $userSetting, taskModel: TaskMainModel(user: userSetting))
+                    //                    SecondView(someClass: TaskMainModel(someStruct: $someStruct))
                 }else if view == "Напоминания"{
-                    AddDataView()
+                    AddDataView(userSetting: $userSetting, addToData: AddDataModel(user: userSetting))
                 }else if view == "Фокусирование"{
                     FocuseView()
                         .environmentObject(focuseModel)
                 }
             }
         }
-       
-       
+        
+        
     }
 }
 
@@ -114,3 +131,39 @@ struct EnterView_Previews: PreviewProvider {
         EnterView()
     }
 }
+
+
+
+//
+//so, i have this code:
+//struct EnterView: View {
+//    @StateObject var focuseModel: FocuseModel = .init ()
+//    @State private var registerORloginView = true
+//    @State private var path:NavigationPath = NavigationPath()
+//    @State var userSetting = userSettings()
+//    @StateObject var viewModel = EnterViewJson()
+//    @State var userS = userSettings()
+//    
+//    
+//    var body: some View {
+//        NavigationStack(path: $path){
+//            
+//            ZStack{
+//                // some code
+//            }
+//            .navigationDestination(for: String.self) { view in
+//               
+//                if view == "входУспешноВыполнен" {
+//                    TaskView(path: $path, userSetting: userSetting, taskModel: TaskMainModel(user: $userSetting) )
+//                }else if view == "Напоминания"{
+//                    AddDataView()
+//                }else if view == "Фокусирование"{
+//                    FocuseView()
+//                        .environmentObject(focuseModel)
+//                }
+//            }
+//        }
+//       
+//       
+//    }
+//}

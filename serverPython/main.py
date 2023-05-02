@@ -123,9 +123,6 @@ def get_data():
     name = data['username']
     passw = data['password']
 
-
-
-
     try:
         connection = pymysql.connect(
             host=host,
@@ -152,7 +149,12 @@ def get_data():
 
                 print("here is files")
                 print(files)
-                response = {'files': files}
+                # response = {'files': files}
+                response = {'files': []}
+                for file in files:
+                    # Convert date to ISO format
+                    file['creationDate'] = file['creationDate'].isoformat()
+                    response['files'].append(file)
                 print(response)
                 # data.append(response)
                 status_code = 200

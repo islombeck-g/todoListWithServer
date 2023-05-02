@@ -1,15 +1,10 @@
-//
-//  userSettings.swift
-//  todoUni_05
-//
-//  Created by Islombek Gofurov on 11.04.2023.
-//
 
 import Foundation
 
 
 struct userSettings{
-     var userName:String = ""
-     var userPassword:String = ""
-     var link:String = "https://a8a2-81-222-190-114.eu.ngrok.io"
+     var userName:String = "First"
+     var userPassword:String = "First"
+   
 }
+let link:String = "https://3a0c-85-249-28-38.eu.ngrok.io"

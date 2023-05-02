@@ -12,6 +12,7 @@ struct todoUni_05App: App {
     var body: some Scene {
         WindowGroup {
             EnterView()
+                
         }
     }
 }

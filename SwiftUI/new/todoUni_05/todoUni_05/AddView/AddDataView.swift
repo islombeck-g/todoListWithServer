@@ -1,9 +1,3 @@
-//
-//  AddDataView.swift
-//  todoUni_05
-//
-//  Created by Islombek Gofurov on 14.04.2023.
-//
 
 import SwiftUI
 
@@ -17,6 +11,9 @@ struct AddDataView: View {
         @State private var selectedCategory: String? = nil
         @State private var selectedPriority: String? = nil
         @State private var selectedCategoryImg:String? = nil
+    @Binding var userSetting: userSettings
+    @ObservedObject var addToData: AddDataModel
+    
         var body: some View {
             ZStack{
                 VStack{
@@ -147,7 +144,6 @@ struct AddDataView: View {
                     }.ignoresSafeArea()
                     .padding(.top, 40)
     //                    .padding(.bottom, -34)
-    
                 GeometryReader{ geometry in
                     Group{
                         Rectangle()
@@ -156,7 +152,17 @@ struct AddDataView: View {
                             .modifier(RoundedCorner(corners: [.topLeft, .bottomLeft], radius: 15  ))
                         Button{
                             if !taskName.isEmpty{
-                                
+                                print("someMagicShouldHappensHere\n\n")
+                                let someData:userData = userData(taskName: taskName, creationDate: dateToString(date: taskDate), priority: selectedPriority ?? "r", tags: selectedCategory ?? "Project", notes: taskDesc, doneOrNot: 0, tagsImg: selectedCategoryImg ?? "folder")
+//                                addToData.addItemToData(me: someData)
+                                addToData.addItemToData(me: someData) { result in
+                                    switch result {
+                                    case .success(let message):
+                                        print(message)
+                                    case .failure(let error):
+                                        print(error.localizedDescription)
+                                    }
+                                }
                                 print("data added succsessfully")
                             }
                             else{
@@ -174,13 +180,18 @@ struct AddDataView: View {
                 }
     
             }
-        }
-
-struct AddDataView_Previews: PreviewProvider {
-    static var previews: some View {
-        AddDataView()
+    func dateToString(date: Date) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
+        return dateFormatter.string(from: date)
     }
-}
+        }
+//
+//struct AddDataView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        AddDataView()
+//    }
+//}
 
 
 //

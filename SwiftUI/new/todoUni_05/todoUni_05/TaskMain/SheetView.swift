@@ -1,9 +1,3 @@
-//
-//  SheetView.swift
-//  todoUni_05
-//
-//  Created by Islombek Gofurov on 14.04.2023.
-//
 
 import SwiftUI
 
@@ -27,7 +21,8 @@ struct SheetView: View {
                     HStack{
                         Text("Время напоминания:")
                         Spacer()
-                        Text("\(item.creationDate.formatted(date: .long, time: .shortened))")
+//                        Text("\(item.creationDate.formatted(date: .long, time: .shortened))")
+                        Text("dateHere")
                     }
                     HStack{
                         Text("Приоритет:")
