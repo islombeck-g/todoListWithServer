@@ -7,4 +7,4 @@ struct userSettings{
      var userPassword:String = "First"
    
 }
-let link:String = "https://3a0c-85-249-28-38.eu.ngrok.io"
+let link:String = "https://4d3b-81-222-188-117.eu.ngrok.io"

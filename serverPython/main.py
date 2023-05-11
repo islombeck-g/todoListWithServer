@@ -156,21 +156,20 @@ def get_data():
                     file['creationDate'] = file['creationDate'].isoformat()
                     response['files'].append(file)
                 print(response)
-                # data.append(response)
                 status_code = 200
     except Exception as ex:
         print(ex)
         response = {'message': 'Error getting files'}
 
         status_code = 500
-    encoded_response = json.dumps(response).encode('unicode_escape').decode()
+    # encoded_response = json.dumps(response).encode('unicode_escape').decode()
     encoded_response = json.dumps(response, cls=CustomEncoder)
 
     print(encoded_response)
     print(encoded_response)
     print("jsonifyResponse:")
     print(jsonify(response))
-    return jsonify(response), status_code
+    return jsonify(response)
 
 # @app.route('/users/<username>', methods=['DELETE'])
 # def delete_user(username):
