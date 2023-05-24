@@ -3,12 +3,9 @@ import SwiftUI
 
 struct ItemView: View {
     @State var item:userData
-    
     @Binding var showInfo:Bool
     var body: some View {
-        
         HStack{
-            
             VStack{
                 HStack{
                     Text(item.taskName)
@@ -20,16 +17,11 @@ struct ItemView: View {
                         .strikethrough((item.doneOrNot != 0), color: .red)
                     Spacer()
                 }
-               
-
-                    
                 HStack{
                     Image(systemName: item.tagsImg)
                     Text(item.tags)
                      Spacer()
                 }.foregroundColor(Color("\(item.priority)"))
-                
-                
             }
             Spacer()
             Button{
@@ -39,10 +31,7 @@ struct ItemView: View {
                 .padding()
                 .border(Color("light"), width: 4)
             }
-                
-                
-        }
-        
+        }  
     }
     func timeString(line:String)->String{
         var returnLine = ""

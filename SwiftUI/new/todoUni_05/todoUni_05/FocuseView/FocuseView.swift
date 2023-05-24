@@ -5,7 +5,6 @@ import UserNotifications
 struct FocuseView: View{
     @EnvironmentObject var focuseModel: FocuseModel
     @Environment(\.presentationMode) var presentationMode
-
     var body: some View{
         VStack{
             ZStack{

@@ -116,7 +116,6 @@ def create_user():
         status_code = 500  # Код HTTP 500 Internal Server Error возвращается, если произошла внутренняя ошибка сервера
 
     return jsonify(response), status_code
-
 @app.route('/data', methods=['POST'])
 def get_data():
     data = request.json
@@ -170,6 +169,49 @@ def get_data():
     print("jsonifyResponse:")
     print(jsonify(response))
     return jsonify(response)
+@app.route('/user', methods=['GET'])
+def get_user():
+    try:
+        connection = pymysql.connect(
+            host=host,
+            port=3306,
+            user=user,
+            password=password,
+            database=db_name,
+            cursorclass=pymysql.cursors.DictCursor
+        )
+        print("good")
+        # print(request.headers)
+        with connection.cursor() as cursor:
+            select_all_rows = "SELECT * FROM files"
+            cursor.execute(select_all_rows)
+            rows = cursor.fetchall()
+            response = {'files': rows}
+            print("userGetResponse")
+            print(response)
+            status_code = 200
+    except Exception as ex:
+        print(ex)
+        response = {'message': 'Error getting files'}
+        status_code = 500
+    # finally:
+    #     connection.close()
+    print("jsonifyResponse:")
+    print(jsonify(response))
+
+    return jsonify(response), status_code
+
+
+
+
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=4568)
+
+
+
+
+
 
 # @app.route('/users/<username>', methods=['DELETE'])
 # def delete_user(username):
@@ -249,46 +291,5 @@ def get_data():
 #         response = {'message': 'Error updating user'}
 #         status_code = 500
 #     return jsonify(response), status_code
-
-
-@app.route('/user', methods=['GET'])
-def get_user():
-    try:
-        connection = pymysql.connect(
-            host=host,
-            port=3306,
-            user=user,
-            password=password,
-            database=db_name,
-            cursorclass=pymysql.cursors.DictCursor
-        )
-        print("good")
-        # print(request.headers)
-        with connection.cursor() as cursor:
-            select_all_rows = "SELECT * FROM files"
-            cursor.execute(select_all_rows)
-            rows = cursor.fetchall()
-            response = {'files': rows}
-            print("userGetResponse")
-            print(response)
-            status_code = 200
-    except Exception as ex:
-        print(ex)
-        response = {'message': 'Error getting files'}
-        status_code = 500
-    # finally:
-    #     connection.close()
-    print("jsonifyResponse:")
-    print(jsonify(response))
-
-    return jsonify(response), status_code
-
-
-
-
-
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=4568)
-
 
 

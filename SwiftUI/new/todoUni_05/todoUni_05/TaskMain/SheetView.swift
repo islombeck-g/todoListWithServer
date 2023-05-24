@@ -21,7 +21,6 @@ struct SheetView: View {
                     HStack{
                         Text("Время напоминания:")
                         Spacer()
-//                        Text("\(item.creationDate.formatted(date: .long, time: .shortened))")
                         Text("dateHere")
                     }
                     HStack{
@@ -38,9 +37,7 @@ struct SheetView: View {
                                 Text("очень важно")
                             }
                         }.foregroundColor(Color(item.priority))
-                        
                     }
-                    
                     HStack{
                         Text("Категория: ")
                         Spacer()
@@ -57,22 +54,14 @@ struct SheetView: View {
                         Button{
                             showSheetView.toggle()
                         }label: {
-                            
-                            
                                 Label("Выполнено", systemImage: "dot.circle.and.hand.point.up.left.fill")
                                     .foregroundColor(.white)
                                     .padding(6)
-                                    
-                            
                         }
                         .buttonStyle(.bordered)
-                       
                     }
                 }.padding(.horizontal, 20)
-                    
-                
             }
-           
         }
     }
 }

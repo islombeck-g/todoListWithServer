@@ -13,7 +13,6 @@ struct AddDataView: View {
         @State private var selectedCategoryImg:String? = nil
     @Binding var userSetting: userSettings
     @ObservedObject var addToData: AddDataModel
-    
         var body: some View {
             ZStack{
                 VStack{
@@ -140,10 +139,8 @@ struct AddDataView: View {
                     .padding(.horizontal, 30)
                     .foregroundColor(Color("light"))
                     Spacer()
-    
                     }.ignoresSafeArea()
                     .padding(.top, 40)
-    //                    .padding(.bottom, -34)
                 GeometryReader{ geometry in
                     Group{
                         Rectangle()
@@ -154,7 +151,6 @@ struct AddDataView: View {
                             if !taskName.isEmpty{
                                 print("someMagicShouldHappensHere\n\n")
                                 let someData:userData = userData(taskName: taskName, creationDate: dateToString(date: taskDate), priority: selectedPriority ?? "r", tags: selectedCategory ?? "Project", notes: taskDesc, doneOrNot: 0, tagsImg: selectedCategoryImg ?? "folder")
-//                                addToData.addItemToData(me: someData)
                                 addToData.addItemToData(me: someData) { result in
                                     switch result {
                                     case .success(let message):
@@ -172,13 +168,11 @@ struct AddDataView: View {
                         }label: {
                             Label("добавить", systemImage: "plus")
                                 .foregroundColor(.white)
-    
                         }
                     }.position(x: geometry.size.width-60, y: geometry.size.height-60)
                 }
                 .navigationBarBackButtonHidden(true)
                 }
-    
             }
     func dateToString(date: Date) -> String {
         let dateFormatter = DateFormatter()
